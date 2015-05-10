@@ -5,7 +5,6 @@
   <title>Log on Spark</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="generator" content="Google Web Designer 1.3.0.0410">
-  
   <style type="text/css">
     html, body {
       width: 100%;
@@ -31,9 +30,8 @@
   <div id="spark-login">
     <script src="http://cdn.jsdelivr.net/sparkjs/0.4.2/spark.min.js"></script>
     <script>
- 
       var globalDevices = [];
-      
+
       sparkLogin(function(data) {
         var devices = spark.listDevices();
 
@@ -58,43 +56,54 @@
           });
       });
 
-      var state = [false, false, false, false, false, false, false];
-      var params = {states: state,
-                    blinkYN: false,
-                    trailYN: false};
+      var state = [0, 0, 0, 0, 0, 0, 0];
+      var params = {
+        states: state,
+        blinkYN: false,
+        trailYN: false
+      };
 
 
-      function changeState(id){
-        state[id] = !state[id];
-        console.log(params);
-        if (state[id])
-          document.getElementById("Led"+id).src = "assets/led.png";
-        else
-          document.getElementById("Led"+id).src = "assets/ledoff.png";
-        
-        callSpark(globalDevices[0]);
+      function changeState(id) {
+        if (state[id]){
+          state[id]=0;
+          document.getElementById("Led" + id).src = "assets/ledoff.png";
+        }
+        else {
+          state[id]=1;
+          document.getElementById("Led" + id).src = "assets/led.png";
+        }
+
+       // if (globalDevices[0]) // if connection to Sparkcore is up
+          callSpark(globalDevices[0]);
       }
 
       function callSpark(device) {
-        console.log('Calling Spark with: ');
+        console.log('Calling Spark changeLeds function with: ');
         console.log(device);
-        console.log(params);
-        device.callFunction('doStuff', params).then(
-          function(data){console.log('Call Spark OK', data);},
-          function(err){console.log('Error calling Spark: ', err);}
+        var statestring = '';
+        for (var i=0; i<state.length; i++){
+          statestring += state[i].toString();
+        }
+        console.log(statestring);
+        device.callFunction('changeLeds', state.toString()).then(
+          function(data) {
+            console.log('Call Spark OK', data);
+          },
+          function(err) {
+            console.log('Error calling Spark: ', err);
+          }
         );
       }
-
-    </script>  
+    </script>
   </div>
-
-  <img src="assets/ledoff.png" class="imageled" id="Led0" onClick="changeState(0)">
-  <img src="assets/ledoff.png" class="imageled" id="Led1" onClick="changeState(1)">
-  <img src="assets/ledoff.png" class="imageled" id="Led2" onClick="changeState(2)">
-  <img src="assets/ledoff.png" class="imageled" id="Led3" onClick="changeState(3)">
-  <img src="assets/ledoff.png" class="imageled" id="Led4" onClick="changeState(4)">
-  <img src="assets/ledoff.png" class="imageled" id="Led5" onClick="changeState(5)">
-  <img src="assets/ledoff.png" class="imageled" id="Led6" onClick="changeState(6)">
+  <img src="assets/ledoff.png" class="imageled" id="Led0" onclick="changeState(0)">
+  <img src="assets/ledoff.png" class="imageled" id="Led1" onclick="changeState(1)">
+  <img src="assets/ledoff.png" class="imageled" id="Led2" onclick="changeState(2)">
+  <img src="assets/ledoff.png" class="imageled" id="Led3" onclick="changeState(3)">
+  <img src="assets/ledoff.png" class="imageled" id="Led4" onclick="changeState(4)">
+  <img src="assets/ledoff.png" class="imageled" id="Led5" onclick="changeState(5)">
+  <img src="assets/ledoff.png" class="imageled" id="Led6" onclick="changeState(6)">
 </body>
 
 </html>
