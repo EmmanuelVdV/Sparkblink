@@ -1,0 +1,6 @@
+List of commands from Spark CLI
+spark cloud list
+spark get 55ff70065075555337071787 numOfCalls
+spark call 55ff70065075555337071787 changeLeds "1111111"
+spark compile shiftRegisterTestWithFunctions.ino
+spark flash 55ff70065075555337071787 shiftRegisterTestWithFunctions.ino

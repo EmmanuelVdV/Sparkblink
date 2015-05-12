@@ -10,7 +10,10 @@ int SRCLK_Pin = D2; //pin 11 on the 75HC595
 
 boolean registers[numOfRegisterPins];
 
+// Defining external functions nd variables
 // int blinkLeds(String choice);
+int changeLeds(String listOfLeds);
+int numOfCalls = 0;
 
 void setup(){
   pinMode(SER_Pin, OUTPUT);
@@ -21,9 +24,15 @@ void setup(){
   Spark.function("changeLeds", changeLeds);
   //Spark.function("blinkLeds", blinkLeds);
 
+  // Registering a variable
+  Spark.variable("numOfCalls", &numOfCalls, INT);
+
   //reset all register pins
   clearRegisters();
   writeRegisters();
+
+  // Serial.begin(9600);
+  // Serial.println("setup complete");
 }
 
 
@@ -61,9 +70,13 @@ void setRegisterPin(int index, int value){
 
 //get values of all leds from external call to the core
 int changeLeds(String listOfLeds){
-  for(int i=0; listOfLeds.length() - 1; i++){
-    setRegisterPin(i, listOfLeds[i]);
-  }
+  //Serial.println("changeLeds got called with parameters:");
+  //Serial.println(listOfLeds);
+
+  //for(int i=0; listOfLeds.length() - 1; i++){
+    numOfCalls = listOfLeds.toInt();
+  //}
+
   return 1;
 }
 

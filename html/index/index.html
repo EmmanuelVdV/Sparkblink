@@ -65,28 +65,27 @@
 
 
       function changeState(id) {
-        if (state[id]){
-          state[id]=0;
+        if (state[id]) {
+          state[id] = 0;
           document.getElementById("Led" + id).src = "assets/ledoff.png";
-        }
-        else {
-          state[id]=1;
+        } else {
+          state[id] = 1;
           document.getElementById("Led" + id).src = "assets/led.png";
         }
 
-       // if (globalDevices[0]) // if connection to Sparkcore is up
-          callSpark(globalDevices[0]);
+        // if (globalDevices[0]) // if connection to Sparkcore is up
+        callSpark(globalDevices[0]);
       }
 
       function callSpark(device) {
         console.log('Calling Spark changeLeds function with: ');
         console.log(device);
         var statestring = '';
-        for (var i=0; i<state.length; i++){
+        for (var i = 0; i < state.length; i++) {
           statestring += state[i].toString();
         }
         console.log(statestring);
-        device.callFunction('changeLeds', state.toString()).then(
+        device.callFunction('changeLeds', statestring).then(
           function(data) {
             console.log('Call Spark OK', data);
           },

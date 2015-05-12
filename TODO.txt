@@ -1,0 +1,5 @@
+TODO
+- Matrix of leds
+- RGB leds with color spin control on html page
+
+- Finish Fritzing schema
